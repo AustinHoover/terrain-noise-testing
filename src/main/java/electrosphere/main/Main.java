@@ -57,7 +57,7 @@ public class Main {
     static float GRADIENT_DIST = 0.01f;
 
     //param for controlling how pointer the initial layers are
-    static float GRAD_INFLUENCE_DROPOFF = 0.5f;
+    static float GRAD_INFLUENCE_DROPOFF = 0.35f;
 
     //dimension of color space
     static final int MIN_COLOR = 0;
@@ -111,7 +111,7 @@ public class Main {
         {
             JLabel label = new JLabel("Gradient Influence Dropoff");
             frame.add(label);
-            JSlider slider = new JSlider(0, 2000, 500);
+            JSlider slider = new JSlider(0, 2000, 350);
             slider.addChangeListener(new ChangeListener() {public void stateChanged(ChangeEvent e) {
                 GRAD_INFLUENCE_DROPOFF = slider.getValue() / 1000.0f;
                 generateHeightmap(heightmap);
