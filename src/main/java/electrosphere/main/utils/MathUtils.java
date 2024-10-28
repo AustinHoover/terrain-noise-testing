@@ -105,7 +105,7 @@ public class MathUtils {
     }
 
     /**
-     * Calculates a random number
+     * Calculates a random number. Range [0,1]
      * @param in The input
      * @return The output
      */
@@ -114,7 +114,7 @@ public class MathUtils {
     }
 
     /**
-     * Calculates a random number
+     * Calculates a random number. Range [0,1]
      * @param x The x input
      * @param y The y input
      * @return The output
@@ -124,7 +124,7 @@ public class MathUtils {
     }
 
     /**
-     * Calculates a random number
+     * Calculates a random number. Range [0,1]
      * @param x The x input
      * @param y The y input
      * @param z The z input
@@ -135,7 +135,7 @@ public class MathUtils {
     }
 
     /**
-     * Calculates a random number
+     * Calculates a random number. Range [0,1]
      * @param x The x input
      * @param y The y input
      * @param z The z input
@@ -258,6 +258,40 @@ public class MathUtils {
         }
 
         return minDist;
+    }
+
+    /**
+     * Generates relaxed points
+     * @param x The x position
+     * @param y The y position
+     * @param relaxationFactor A parameter to control how uniform the points are. Essentially, the higher this is, the more uniform the points will be. Ranges (0,1)
+     * @param threshold The threshold at which the pixel is within the point
+     * @return 1 if at the relaxed point, 0 otherwise
+     */
+    public static double relaxedPointGen(double x, double y, double relaxationFactor, double threshold){
+        //integer of the point coordinates
+        double x_i = Math.floor(x);
+        double y_i = Math.floor(y);
+
+        //position of the source point within the current cell
+        double source_x = x - x_i;
+        double source_y = y - y_i;
+
+        //calculate the current cell's point
+        double cell_x = rand(x_i,y_i,0);
+        double cell_y = rand(x_i,y_i,1);
+
+        //relax the point
+        double x_relaxed = cell_x * (1.0 - relaxationFactor) + (relaxationFactor / 2.0);
+        double y_relaxed = cell_y * (1.0 - relaxationFactor) + (relaxationFactor / 2.0);
+
+        //dist calc + comparison
+        double dist = Math.sqrt((source_x - x_relaxed) * (source_x - x_relaxed) + (source_y - y_relaxed) * (source_y - y_relaxed));
+        if(dist < threshold){
+            return 1;
+        }
+
+        return 0;
     }
     
 }

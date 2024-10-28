@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import electrosphere.main.generators.ForestGen;
 import electrosphere.main.generators.HillsGen;
 import electrosphere.main.generators.PlainsGen;
 
@@ -69,6 +70,20 @@ public class Main {
             selectbutton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e) {
                 generatorContentContainer.removeAll();
                 generatorContentContainer.add(plainsGen.getDisplay());
+                frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+                frame.revalidate();
+                frame.repaint();
+            }});
+            generatorSelectionButtons.add(selectbutton);
+        }
+
+        //forest generator
+        {
+            ForestGen forestGen = new ForestGen();
+            JButton selectbutton = new JButton("Forest");
+            selectbutton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e) {
+                generatorContentContainer.removeAll();
+                generatorContentContainer.add(forestGen.getDisplay());
                 frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
                 frame.revalidate();
                 frame.repaint();
