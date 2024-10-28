@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import electrosphere.main.generators.HillsGen;
 import electrosphere.main.generators.PlainsGen;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
