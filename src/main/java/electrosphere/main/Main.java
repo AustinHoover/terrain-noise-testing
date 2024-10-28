@@ -9,6 +9,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import electrosphere.main.generators.HillsGen;
+import electrosphere.main.utils.OpenSimplex2S;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -39,25 +42,10 @@ public class Main {
     static final double[][] NOISE_SCALES = new double[][]{
         {0.01, 3.0},
         {0.02, 2.0},
-        {0.05, 1.0},
-        {0.1, 1.0},
-        {0.3, 1.0},
+        {0.05, 0.8},
+        {0.1, 0.3},
+        {0.3, 0.2},
     };
-
-    //the different scales of noise to sample from
-    static final double[][] GRAD_NOISE = new double[][]{
-        {0.01, 2.0},
-        {0.02, 2.0},
-        {0.05, 1.0},
-        {0.1, 1.0},
-        {0.3, 1.0},
-    };
-
-    //distance from origin to sample for gradient calculation
-    static float GRADIENT_DIST = 0.01f;
-
-    //param for controlling how pointer the initial layers are
-    static float GRAD_INFLUENCE_DROPOFF = 0.35f;
 
     //dimension of color space
     static final int MIN_COLOR = 0;
@@ -113,7 +101,7 @@ public class Main {
             frame.add(label);
             JSlider slider = new JSlider(0, 2000, 350);
             slider.addChangeListener(new ChangeListener() {public void stateChanged(ChangeEvent e) {
-                GRAD_INFLUENCE_DROPOFF = slider.getValue() / 1000.0f;
+                HillsGen.GRAD_INFLUENCE_DROPOFF = slider.getValue() / 1000.0f;
                 generateHeightmap(heightmap);
                 frame.repaint();
             }});
@@ -129,7 +117,7 @@ public class Main {
             frame.add(label);
             JSlider slider = new JSlider(0, 100, 60);
             slider.addChangeListener(new ChangeListener() {public void stateChanged(ChangeEvent e) {
-                GRADIENT_DIST = slider.getValue() / 400.0f;
+                HillsGen.GRADIENT_DIST = slider.getValue() / 400.0f;
                 generateHeightmap(heightmap);
                 frame.repaint();
             }});
@@ -179,7 +167,7 @@ public class Main {
      */
     static float getHeight(long SEED, float x, float y){
         float rVal = 0;
-        rVal = gradientHeight(SEED, x, y);
+        rVal = sampleAllNoise(SEED, x, y);
         return rVal;
     }
 
@@ -194,38 +182,6 @@ public class Main {
         float rVal = 0;
         for(int n = 0; n < NOISE_SCALES.length; n++){
             rVal = rVal + (float)(OpenSimplex2S.noise2_ImproveX(SEED, x * NOISE_SCALES[n][0], y * NOISE_SCALES[n][0]) * NOISE_SCALES[n][1]);
-        }
-        return rVal;
-    }
-
-    /**
-     * Applies a gradient approach to heightfield generation
-     * @param SEED The seed
-     * @param x The x value
-     * @param y The y value
-     * @return The elevation at x,y
-     */
-    static float gradientHeight(long SEED, float x, float y){
-        float rVal = 0;
-
-        float gradXAccum = 0;
-        float gradYAccum = 0;
-        for(int n = 0; n < GRAD_NOISE.length; n++){
-            //get noise samples
-            float noiseOrigin = (float)(OpenSimplex2S.noise2_ImproveX(SEED, x * GRAD_NOISE[n][0], y * GRAD_NOISE[n][0]) * GRAD_NOISE[n][1]);
-            float noiseX = (float)(OpenSimplex2S.noise2_ImproveX(SEED, x * GRAD_NOISE[n][0] + GRADIENT_DIST, y * GRAD_NOISE[n][0]) * GRAD_NOISE[n][1]);
-            float noiseY = (float)(OpenSimplex2S.noise2_ImproveX(SEED, x * GRAD_NOISE[n][0], y * GRAD_NOISE[n][0] + GRADIENT_DIST) * GRAD_NOISE[n][1]);
-            //calculate gradient accumulation
-            float gradX = (noiseX - noiseOrigin) / GRADIENT_DIST;
-            float gradY = (noiseY - noiseOrigin) / GRADIENT_DIST;
-            gradXAccum = gradXAccum + gradX;
-            gradYAccum = gradYAccum + gradY;
-            //determine current noise's influence based on gradient
-            float gradientMagnitude = (float)Math.sqrt(gradXAccum * gradXAccum + gradYAccum * gradYAccum);
-            float influence = 1.0f / (1.0f + gradientMagnitude * GRAD_INFLUENCE_DROPOFF);
-
-            //add to height
-            rVal = rVal + (float)(OpenSimplex2S.noise2_ImproveX(SEED, x * GRAD_NOISE[n][0], y * GRAD_NOISE[n][0]) * GRAD_NOISE[n][1]) * influence;
         }
         return rVal;
     }

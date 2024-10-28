@@ -1,4 +1,4 @@
-package electrosphere.main;
+package electrosphere.main.utils;
 
 /**
  * Utility functions that perform math

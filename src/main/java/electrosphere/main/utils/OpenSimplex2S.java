@@ -1,4 +1,4 @@
-package electrosphere.main;
+package electrosphere.main.utils;
 
 /**
  * K.jpg's OpenSimplex 2, smooth variant ("SuperSimplex")
