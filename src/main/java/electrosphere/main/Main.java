@@ -1,5 +1,6 @@
 package electrosphere.main;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,7 +9,6 @@ import electrosphere.main.generators.HillsGen;
 import electrosphere.main.generators.PlainsGen;
 
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -55,8 +55,8 @@ public class Main {
             selectbutton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e) {
                 generatorContentContainer.removeAll();
                 generatorContentContainer.add(hillsGen.getDisplay());
-                frame.setLayout(new GridLayout(2, 1));
-                frame.pack();
+                frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+                frame.revalidate();
                 frame.repaint();
             }});
             generatorSelectionButtons.add(selectbutton);
@@ -69,8 +69,8 @@ public class Main {
             selectbutton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e) {
                 generatorContentContainer.removeAll();
                 generatorContentContainer.add(plainsGen.getDisplay());
-                frame.setLayout(new GridLayout(2, 1));
-                frame.pack();
+                frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+                frame.revalidate();
                 frame.repaint();
             }});
             generatorSelectionButtons.add(selectbutton);
@@ -81,7 +81,7 @@ public class Main {
         //add top level panels
         frame.add(generatorSelectionButtons);
         frame.add(generatorContentContainer);
-        frame.setLayout(new GridLayout(2, 1));
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
 
         //setup frame
