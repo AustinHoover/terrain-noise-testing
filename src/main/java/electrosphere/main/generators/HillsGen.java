@@ -148,13 +148,17 @@ public class HillsGen implements Generator {
         rVal.add(controlsPanel);
 
         //regenerate button
-        JButton buttonRegenerate = new JButton("New Seed");
-        buttonRegenerate.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {
-            Main.SEED = new Random().nextInt();
-            generateHeightmap(heightmap);
-            rVal.repaint();
-        }});
-        controlsPanel.add(buttonRegenerate);
+        {
+            JPanel containingPanel = new JPanel();
+            JButton buttonRegenerate = new JButton("New Seed");
+            buttonRegenerate.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {
+                Main.SEED = new Random().nextInt();
+                generateHeightmap(heightmap);
+                rVal.repaint();
+            }});
+            containingPanel.add(buttonRegenerate);
+            controlsPanel.add(containingPanel);
+        }
 
         //gradient influence dropoff slider
         {
