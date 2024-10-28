@@ -4,11 +4,7 @@ import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import electrosphere.main.Main;
 import electrosphere.main.utils.GraphicsUtils;
@@ -37,13 +33,6 @@ public class PlainsGen implements Generator {
         {0.1, 0.3},
         {0.3, 0.2},
     };
-
-    //distance from origin to sample for gradient calculation
-    public static float GRADIENT_DIST = 0.01f;
-
-    //param for controlling how pointer the initial layers are
-    public static float GRAD_INFLUENCE_DROPOFF = 0.35f;
-
 
     /**
      * Generates a heightmap
@@ -125,7 +114,6 @@ public class PlainsGen implements Generator {
 
         //panel that contains all controls
         JPanel controlsPanel = new JPanel();
-        controlsPanel.setLayout(new GridLayout(2, 2));
         rVal.add(controlsPanel);
 
         //regenerate button
@@ -136,36 +124,6 @@ public class PlainsGen implements Generator {
             rVal.repaint();
         }});
         controlsPanel.add(buttonRegenerate);
-
-        //gradient influence dropoff slider
-        {
-            JLabel label = new JLabel("Gradient Influence Dropoff");
-            JSlider slider = new JSlider(0, 2000, 350);
-            slider.addChangeListener(new ChangeListener() {public void stateChanged(ChangeEvent e) {
-                HillsGen.GRAD_INFLUENCE_DROPOFF = slider.getValue() / 1000.0f;
-                generateHeightmap(heightmap);
-                rVal.repaint();
-            }});
-            JPanel combined = new JPanel();
-            combined.add(label);
-            combined.add(slider);
-            controlsPanel.add(combined);
-        }
-
-        //gradient sampler distance slider
-        {
-            JLabel label = new JLabel("Gradient Sampler Distance");
-            JSlider slider = new JSlider(0, 100, 60);
-            slider.addChangeListener(new ChangeListener() {public void stateChanged(ChangeEvent e) {
-                HillsGen.GRADIENT_DIST = slider.getValue() / 400.0f;
-                generateHeightmap(heightmap);
-                rVal.repaint();
-            }});
-            JPanel combined = new JPanel();
-            combined.add(label);
-            combined.add(slider);
-            controlsPanel.add(combined);
-        }
 
         return rVal;
     }
