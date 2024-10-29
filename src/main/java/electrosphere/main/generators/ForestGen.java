@@ -12,7 +12,7 @@ import javax.swing.event.ChangeListener;
 
 import electrosphere.main.Main;
 import electrosphere.main.utils.GraphicsUtils;
-import electrosphere.main.utils.MathUtils;
+import io.github.studiorailgun.NoiseUtils;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -64,7 +64,7 @@ public class ForestGen implements Generator {
      * @return The height
      */
     public float getHeight(long SEED, float x, float y){
-        return (float)MathUtils.relaxedPointGen(x * scale, y * scale, relaxationFactor, threshold);
+        return (float)NoiseUtils.relaxedPointGen(x * scale, y * scale, relaxationFactor, threshold);
     }
 
 

@@ -10,6 +10,14 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.studiorailgun</groupId>
+            <artifactId>MathUtils</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    </dependencies>
     
     <build>
         <plugins>
